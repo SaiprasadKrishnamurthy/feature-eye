@@ -1,0 +1,248 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="layout.xhtml">
+
+    <ui:define name="left">
+        <ui:include src="includes/allLinksAsButtons.xhtml"/>
+    </ui:define>
+
+    <ui:define name="right">
+    </ui:define>
+
+    <ui:define name="main">
+
+        <p:spacer width="10" height="30"/>
+
+        <h:form id="form">
+            #{createRepo.dummy}
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+            <h2>Create a new Repository</h2>
+
+            <p:tabView>
+                <p:tab title="Data Model">
+                    <h:panelGrid columns="1" cellpadding="5">
+                        <p:inputText placeholder="Repository name" size="35"/>
+                        <p:inputTextarea rows="6" cols="33" placeholder="Repository description"/>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:dataTable var="field" value="#{createRepo.fields}">
+                        <p:column headerText="Field Name">
+                            <p:inputText value="#{'FirstName'}"/>
+                        </p:column>
+
+                        <p:column headerText="Field Type">
+                            <p:selectOneMenu id="console" style="width:125px">
+                                <f:selectItem itemLabel="date" itemValue="date"/>
+                                <f:selectItem itemLabel="number" itemValue="number"/>
+                                <f:selectItem itemLabel="string" itemValue="string"/>
+                            </p:selectOneMenu>
+                        </p:column>
+
+                        <p:column headerText="Primary Key">
+                            <p:selectBooleanCheckbox value=""/>
+                        </p:column>
+
+                        <p:column headerText="Non Latin Field">
+                            <p:selectBooleanCheckbox value=""/>
+                        </p:column>
+                        <p:column headerText="Action">
+                            <p:commandButton id="iconOnly" icon="ui-icon-#{field}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:separator/>
+                    <p:commandButton value="Save" icon="ui-icon-disk"/>
+                </p:tab>
+                <p:tab title="Search Rules">
+                    <h:panelGrid columns="1">
+                        <p:dataTable var="car" value="#{createRepo.fields}">
+                            <f:facet name="header">
+                                Expand rows to see search rules for this field
+                            </f:facet>
+                            <p:column style="width:16px">
+                                <p:rowToggler/>
+                            </p:column>
+                            <p:column headerText="Input FieldName">
+                                <h:outputText value="FirstName"/>
+                            </p:column>
+                            <p:column headerText="Input Search Criteria">
+                                <p:selectOneMenu id="console" style="width:125px">
+                                    <f:selectItem itemLabel="" itemValue="FUZZY"/>
+                                    <f:selectItem itemLabel="FUZZY" itemValue="FUZZY"/>
+                                    <f:selectItem itemLabel="EXACT" itemValue="EXACT"/>
+                                    <f:selectItem itemLabel="EXACT_AND" itemValue="EXACT_AND"/>
+                                    <f:selectItem itemLabel="WILDCARD" itemValue="WILDCARD"/>
+                                    <f:selectItem itemLabel="GREATER_THAN" itemValue="GREATER_THAN"/>
+                                    <f:selectItem itemLabel="LESSER_THAN" itemValue="LESSER_THAN"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column headerText="Score Aggregation Function">
+                                <p:selectOneMenu id="score" style="width:125px">
+                                    <f:selectItem itemLabel="" itemValue="ARITHMETIC_MEAN"/>
+                                    <f:selectItem itemLabel="ARITHMETIC_MEAN" itemValue="ARITHMETIC_MEAN"/>
+                                    <f:selectItem itemLabel="HARMONIC_MEAN" itemValue="HARMONIC_MEAN"/>
+                                    <f:selectItem itemLabel="GEOMETRIC_MEAN" itemValue="GEOMETRIC_MEAN"/>
+                                    <f:selectItem itemLabel="MAX" itemValue="MAX"/>
+                                    <f:selectItem itemLabel="MEDIAN" itemValue="MEDIAN"/>
+                                    <f:selectItem itemLabel="WEIGHTED_SUM" itemValue="WEIGHTED_SUM"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column headerText="Action">
+                                <p:commandButton id="iconOnly" icon="ui-icon-#{car}"/>
+                            </p:column>
+                            <p:rowExpansion>
+                                <h:panelGrid columns="2" cellpadding="10">
+                                    <p:dataTable var="car1" value="#{createRepo.fields}" style="width:100%;">
+                                        <p:column headerText="Target FieldName">
+                                            <h:outputText value="FirstName_Ar"/>
+                                        </p:column>
+                                        <p:column headerText="Rule Apply Condition">
+                                            <p:selectOneMenu id="rac" style="width:145px">
+                                                <f:selectItem itemLabel="OnlyWhenValueIsLatin"
+                                                              itemValue="OnlyWhenValueIsLatin"/>
+                                                <f:selectItem itemLabel="OnlyWhenValueIsNonLatin"
+                                                              itemValue="OnlyWhenValueIsNonLatin"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                        <p:column headerText="Value Transformation Function">
+                                            <h:panelGrid columns="2" cellpadding="10">
+                                                <p:selectOneMenu id="vtf" style="width:145px">
+                                                    <f:selectItem itemLabel="Do not transform"
+                                                                  itemValue="Do not transform"/>
+                                                    <f:selectItem itemLabel="Transliterate" itemValue="Transliterate"/>
+                                                </p:selectOneMenu>
+                                                <p:selectOneMenu id="transli" style="width:145px">
+                                                    <f:selectItem itemLabel="Arabic to Latin Transliteration"
+                                                                  itemValue="Arabic to Latin Transliteration"/>
+                                                    <f:selectItem itemLabel="Latin to Arabic Transliteration"
+                                                                  itemValue="Latin to Arabic Transliteration"/>
+                                                </p:selectOneMenu>
+
+                                            </h:panelGrid>
+                                        </p:column>
+                                        <p:column headerText="Target Field Name">
+                                            <p:selectOneMenu style="width:145px">
+                                                <f:selectItem itemLabel="FirstName"
+                                                              itemValue="OnlyWhenValueIsLatin"/>
+                                                <f:selectItem itemLabel="LastName"
+                                                              itemValue="OnlyWhenValueIsNonLatin"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                        <p:column headerText="Target Field Search Criteria">
+                                            <p:selectOneMenu style="width:125px">
+                                                <f:selectItem itemLabel="PHONETIC" itemValue="FUZZY"/>
+                                                <f:selectItem itemLabel="NGRAM" itemValue="FUZZY"/>
+                                                <f:selectItem itemLabel="DISTANCE" itemValue="FUZZY"/>
+                                                <f:selectItem itemLabel="EXACT" itemValue="EXACT"/>
+                                                <f:selectItem itemLabel="EXACT_AND" itemValue="EXACT_AND"/>
+                                                <f:selectItem itemLabel="WILDCARD" itemValue="WILDCARD"/>
+                                                <f:selectItem itemLabel="GREATER_THAN" itemValue="GREATER_THAN"/>
+                                                <f:selectItem itemLabel="LESSER_THAN" itemValue="LESSER_THAN"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                        <p:column headerText="Target Field Search Boost Factor">
+                                            <h:inputText value="1"/>
+                                        </p:column>
+                                        <p:column headerText="Score Contribution Percentage">
+                                            <h:inputText value="10"/>
+                                        </p:column>
+                                        <p:column headerText="Action">
+                                            <p:commandButton id="iconOnly" icon="ui-icon-#{car1}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </p:rowExpansion>
+                        </p:dataTable>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:commandButton value="Save" icon="ui-icon-disk"/>
+
+                </p:tab>
+                <p:tab title="Search Preview">
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:outputLabel value="Upload data to this repository"/>
+                            <p:fileUpload mode="advanced"
+                                          auto="true" sizeLimit="100000"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                        </h:panelGrid>
+                        <p:panel header="Search criteria">
+                            <p:dataTable var="car" value="#{createRepo.fields}">
+                                <p:column headerText="Field">
+                                    <p:selectOneMenu style="width:125px">
+                                        <f:selectItem itemLabel="FirstName" itemValue="FUZZY"/>
+                                        <f:selectItem itemLabel="LastName" itemValue="EXACT"/>
+                                        <f:selectItem itemLabel="FirstName_Ar" itemValue="EXACT_AND"/>
+                                        <f:selectItem itemLabel="Gender" itemValue="GREATER_THAN"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column headerText="Search Filter">
+                                    <p:selectOneMenu id="console" style="width:125px">
+                                        <f:selectItem itemLabel="" itemValue="FUZZY"/>
+                                        <f:selectItem itemLabel="FUZZY" itemValue="FUZZY"/>
+                                        <f:selectItem itemLabel="EXACT" itemValue="EXACT"/>
+                                        <f:selectItem itemLabel="EXACT_AND" itemValue="EXACT_AND"/>
+                                        <f:selectItem itemLabel="WILDCARD" itemValue="WILDCARD"/>
+                                        <f:selectItem itemLabel="GREATER_THAN" itemValue="GREATER_THAN"/>
+                                        <f:selectItem itemLabel="LESSER_THAN" itemValue="LESSER_THAN"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column headerText="Field Value">
+                                    <p:inputText value="Mohammed"/>
+                                </p:column>
+                                <p:column headerText="Field Weightage">
+                                    <p:inputText value="40"/>
+                                </p:column>
+                                <p:column headerText="Action">
+                                    <p:commandButton id="iconOnly" icon="ui-icon-#{car}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <p:spacer height="30" />
+                            <p:commandButton value="Search" icon="ui-icon-search"/>
+
+                        </p:panel>
+                        <p:separator></p:separator>
+                        <p:panel header="Search Results">
+                            <p:dataTable var="car" value="#{createRepo.fields}">
+                                <p:column style="width:16px">
+                                    <p:rowToggler/>
+                                </p:column>
+                                <p:column headerText="FirstName">
+                                    <p:outputLabel value="Mohammed"/>
+                                </p:column>
+                                <p:column headerText="LastName">
+                                    <p:outputLabel value="Irfan"/>
+                                </p:column>
+                                <p:column headerText="Gender">
+                                    <p:outputLabel value="M"/>
+                                </p:column>
+                                <p:column headerText="DOB">
+                                    <p:outputLabel value="14-12-1981"/>
+                                </p:column>
+                                <p:column headerText="Score">
+                                    <p:outputLabel value="90"/>
+                                </p:column>
+
+                                <p:rowExpansion>
+                                    <h:panelGrid columns="1" cellpadding="10">
+                                        <p:outputLabel
+                                                value="FirstName =====> FirstName_PHONETIC(Matches: 3,  Total: 6, Contribution: (3/6) * 30 = 15.0),   FirstName_NGRAM(Matches: 2,  Total: 4, Contribution: (2/4) * 30 = 15.0), FieldScore:  ArithmeticMean(15.0, 15.0) =====>  15.0"/>
+                                        <p:outputLabel
+                                                value="LastName =====> LastName_PHONETIC(Matches: 3,  Total: 6, Contribution: (3/6) * 30 = 15.0),   LastName_NGRAM(Matches: 3,  Total: 4, Contribution: (2/4) * 30 = 15.0),  FieldScore:  MAX(15.0, 15.0) =====>  75.0"/>
+                                    </h:panelGrid>
+                                </p:rowExpansion>
+
+                            </p:dataTable>
+                        </p:panel>
+
+                    </h:form>
+                </p:tab>
+            </p:tabView>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>

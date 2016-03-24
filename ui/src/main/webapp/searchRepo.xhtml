@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="layout.xhtml">
+
+    <ui:define name="left">
+        <ui:include src="includes/allLinksAsButtons.xhtml"/>
+    </ui:define>
+
+    <ui:define name="right">
+    </ui:define>
+
+    <ui:define name="main">
+
+        <p:spacer width="10" height="30"/>
+
+        #{createRepo.dummy}
+        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+        <h2>Search Repository</h2>
+
+        <h:form>
+            <p:panel header="Search criteria">
+                <h:panelGrid columns="2" cellpadding="5" cellspacing="10">
+                    Repo name
+                    <p:inputText value="" placeholder="Repository name (or part of name)" size="30"/>
+                    <p:outputLabel for="popup" value="Created Date:"/>
+                    <p:calendar id="popup" value="#{createRepo.createdDate}" size="30"/>
+                </h:panelGrid>
+            </p:panel>
+            <p:separator/>
+            <p:panel header="Search Results">
+                <p:dataTable var="car" value="#{createRepo.fields}">
+                    <p:column headerText="Repository Name">
+                        <p:outputLabel value="watchlist"/>
+                    </p:column>
+                    <p:column headerText="Description">
+                        <p:outputLabel value="watchlists repository to risk assess"/>
+                    </p:column>
+                    <p:column headerText="Current Version">
+                        <p:outputLabel value="1"/>
+                    </p:column>
+                    <p:column headerText="Number of Documents">
+                        <p:outputLabel value="112321"/>
+                    </p:column>
+                    <p:column headerText="Action">
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="view" icon="ui-icon-zoomin"/>
+                            <p:commandButton value="edit" icon="ui-icon-pencil"/>
+                        </h:panelGrid>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

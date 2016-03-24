@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="layout.xhtml">
+
+    <ui:define name="left">
+        <ui:include src="includes/allLinksAsButtons.xhtml"/>
+    </ui:define>
+
+    <ui:define name="right">
+    </ui:define>
+
+    <ui:define name="main">
+        <h:form>
+
+            <p:spacer width="10" height="30"/>
+
+            #{backup.backup}
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+            <p:panel header="Search for backups">
+                <h:panelGrid columns="3" cellpadding="5" cellspacing="10">
+                    <p:outputLabel for="popup" value="Backup Date:"/>
+                    <p:calendar id="popup" value="#{createRepo.createdDate}" size="30"/>
+                    <p:commandButton value="search" icon="ui-icon-search"/>
+
+                </h:panelGrid>
+            </p:panel>
+            <p:separator />
+            <p:panel header="Backups">
+                <p:dataTable var="car" value="#{createRepo.fields}">
+                    <p:column headerText="Backup Name">
+                        <p:outputLabel value="Concorde_fea32-a889s-usuisl-is11"/>
+                    </p:column>
+                    <p:column headerText="Backup Date">
+                        <p:outputLabel value="20-Mar-2016:10:30"/>
+                    </p:column>
+                    <p:column headerText="Action">
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="delete" icon="ui-icon-trash"/>
+                            <p:commandButton value="restore" icon="ui-icon-play"/>
+                        </h:panelGrid>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

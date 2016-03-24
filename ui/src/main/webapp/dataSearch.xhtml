@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="layout.xhtml">
+
+    <ui:define name="left">
+        <ui:include src="includes/allLinksAsButtons.xhtml"/>
+    </ui:define>
+
+    <ui:define name="right">
+    </ui:define>
+
+    <ui:define name="main">
+
+        <p:spacer width="10" height="30"/>
+
+        <h:form id="form">
+            #{createRepo.dummy}
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+            <h2>Search</h2>
+            <p:panel header="Search criteria">
+                <h:panelGrid columns="2" cellpadding="5" cellspacing="10">
+                    Repo name
+                    <p:inputText value="" placeholder="Repository name" size="15"/>
+                    Number of records to fetch
+                    <p:inputText value="" placeholder="Number of Records" size="15"/>
+                    Show score calculation breakdown
+                    <p:selectBooleanCheckbox value="ss" label="sss"/>
+                </h:panelGrid>
+                <p:separator></p:separator>
+
+                <p:dataTable var="car" value="#{createRepo.fields}">
+                    <p:column headerText="Field">
+                        <p:selectOneMenu style="width:125px">
+                            <f:selectItem itemLabel="FirstName" itemValue="FUZZY"/>
+                            <f:selectItem itemLabel="LastName" itemValue="EXACT"/>
+                            <f:selectItem itemLabel="FirstName_Ar" itemValue="EXACT_AND"/>
+                            <f:selectItem itemLabel="Gender" itemValue="GREATER_THAN"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column headerText="Search Filter">
+                        <p:selectOneMenu id="console" style="width:125px">
+                            <f:selectItem itemLabel="" itemValue="FUZZY"/>
+                            <f:selectItem itemLabel="FUZZY" itemValue="FUZZY"/>
+                            <f:selectItem itemLabel="EXACT" itemValue="EXACT"/>
+                            <f:selectItem itemLabel="EXACT_AND" itemValue="EXACT_AND"/>
+                            <f:selectItem itemLabel="WILDCARD" itemValue="WILDCARD"/>
+                            <f:selectItem itemLabel="GREATER_THAN" itemValue="GREATER_THAN"/>
+                            <f:selectItem itemLabel="LESSER_THAN" itemValue="LESSER_THAN"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column headerText="Field Value">
+                        <p:inputText value="Mohammed"/>
+                    </p:column>
+                    <p:column headerText="Field Weightage">
+                        <p:inputText value="40"/>
+                    </p:column>
+                    <p:column headerText="Action">
+                        <p:commandButton id="iconOnly" icon="ui-icon-#{car}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Search" icon="ui-icon-search"/>
+            </p:panel>
+            <p:separator></p:separator>
+            <p:panel header="Search Results">
+                <p:dataTable var="car" value="#{createRepo.fields}">
+                    <p:column style="width:16px">
+                        <p:rowToggler/>
+                    </p:column>
+                    <p:column headerText="FirstName">
+                        <p:outputLabel value="Mohammed"/>
+                    </p:column>
+                    <p:column headerText="LastName">
+                        <p:outputLabel value="Irfan"/>
+                    </p:column>
+                    <p:column headerText="Gender">
+                        <p:outputLabel value="M"/>
+                    </p:column>
+                    <p:column headerText="DOB">
+                        <p:outputLabel value="14-12-1981"/>
+                    </p:column>
+                    <p:column headerText="Score">
+                        <p:outputLabel value="90"/>
+                    </p:column>
+
+                    <p:rowExpansion>
+                        <h:panelGrid columns="1" cellpadding="10">
+                            <p:outputLabel
+                                    value="FirstName =====> FirstName_PHONETIC(Matches: 3,  Total: 6, Contribution: (3/6) * 30 = 15.0),   FirstName_NGRAM(Matches: 2,  Total: 4, Contribution: (2/4) * 30 = 15.0), FieldScore:  ArithmeticMean(15.0, 15.0) =====>  15.0"/>
+                            <p:outputLabel
+                                    value="LastName =====> LastName_PHONETIC(Matches: 3,  Total: 6, Contribution: (3/6) * 30 = 15.0),   LastName_NGRAM(Matches: 3,  Total: 4, Contribution: (2/4) * 30 = 15.0),  FieldScore:  MAX(15.0, 15.0) =====>  75.0"/>
+                        </h:panelGrid>
+                    </p:rowExpansion>
+
+                </p:dataTable>
+            </p:panel>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

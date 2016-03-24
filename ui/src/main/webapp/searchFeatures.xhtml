@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="layout.xhtml">
+
+    <ui:define name="left">
+        <ui:include src="includes/allLinksAsButtons.xhtml"/>
+    </ui:define>
+
+    <ui:define name="right">
+    </ui:define>
+
+    <ui:define name="main">
+
+        <p:spacer width="10" height="30"/>
+
+        <h:form id="form">
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+            <h2>Search Features</h2>
+            <p:panel header="Search criteria">
+                <h:panelGrid columns="2" cellpadding="5" cellspacing="10">
+                    Text contained in the feature file
+                    <p:inputText value="" placeholder="Repository name" size="35"/>
+                    One or more Tags in the feature file (eg: @ui@config)
+                    <p:inputText value="" placeholder="Tags" size="35"/>
+                    <p:commandButton value="search" icon="ui-icon-search"/>
+                </h:panelGrid>
+            </p:panel>
+            <p:separator></p:separator>
+        </h:form>
+    </ui:define>
+</ui:composition>

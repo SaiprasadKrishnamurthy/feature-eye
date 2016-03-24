@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="layout.xhtml">
+
+
+    <ui:define name="left">
+        <ui:include src="includes/allLinksAsButtons.xhtml"/>
+    </ui:define>
+
+    <ui:define name="right">
+    </ui:define>
+
+    <ui:define name="main">
+
+        <p:spacer width="10" height="30"/>
+
+        #{createRepo.dummy}
+        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+        <h2>Code</h2>
+
+        <h:form>
+            <pe:codeMirror id="codeMirror" mode="gherkin"
+                           theme="eclipse" value="" lineNumbers="true"/>
+
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>
