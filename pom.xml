@@ -20,8 +20,6 @@
         <module>api</module>
         <module>ui</module>
         <module>loaders</module>
-        <!--
         <module>rest</module>
-        -->
     </modules>
 </project>

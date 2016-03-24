@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="layout.xhtml">
+
+
+    <ui:define name="left">
+        <ui:include src="includes/allLinksAsButtons.xhtml"/>
+    </ui:define>
+
+    <ui:define name="right">
+    </ui:define>
+
+    <ui:define name="main">
+
+        <p:spacer width="10" height="30"/>
+
+        <h2>Feature Detail</h2>
+
+        <h:form>
+            <p:tabView>
+            <p:tab title="Content">
+                <h:panelGrid columns="2" cellpadding="5" cellspacing="10">
+                    <p:inputText value="#{featureController.scenarioTags}" placeholder="Tag names to filter the scenarios separated by whitespace eg: ui config" size="80"/>
+                    <p:commandButton icon="ui-icon-arrowrefresh-1-w" title="apply filter" actionListener="#{featureController.filterScenarios}"/>
+                </h:panelGrid>
+
+                <pe:codeMirror id="codeMirror" mode="gherkin"
+                               theme="eclipse" value="#{featureController.currentFeature.rawContents}"
+                               lineNumbers="true" style="height: auto"/>
+            </p:tab>
+            <p:tab title="Reports">
+                COMING SOON
+            </p:tab>
+
+            <p:tab title="Subscriptions">
+                COMING SOON
+
+            </p:tab>
+            </p:tabView>
+
+
+
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

@@ -18,14 +18,25 @@
 
         <p:spacer width="10" height="30"/>
 
-        #{createRepo.dummy}
+
         <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
-        <h2>Code</h2>
+        <h2>All Features Summary</h2>
 
         <h:form>
-            <pe:codeMirror id="codeMirror" mode="gherkin"
-                           theme="eclipse" value="" lineNumbers="true"/>
+                <p:dataTable var="f" value="#{featureController.featureSummary}" rows="5"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,30,50">
+                    <p:column headerText="Feature Id (System generated)">
+                        <p:link outcome="featureDetail" value="#{f.id}">
+                            <f:param name="featureId" value="#{f.id}" />
+                        </p:link>
+                    </p:column>
 
+                    <p:column headerText="File Name">
+                        <h:outputText value="#{f.fileName}" />
+                    </p:column>
+                </p:dataTable>
         </h:form>
 
 
