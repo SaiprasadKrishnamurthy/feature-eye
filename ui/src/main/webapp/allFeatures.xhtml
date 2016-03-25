@@ -34,7 +34,9 @@
                     </p:column>
 
                     <p:column headerText="File Name">
-                        <h:outputText value="#{f.fileName}" />
+                        <p:link outcome="featureDetail" value="#{f.fileName}">
+                            <f:param name="featureId" value="#{f.id}" />
+                        </p:link>
                     </p:column>
                 </p:dataTable>
         </h:form>

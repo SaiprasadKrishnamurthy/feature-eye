@@ -10,4 +10,9 @@
         <managed-bean-class>org.sai.featureeye.controller.FeatureController</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>homeController</managed-bean-name>
+        <managed-bean-class>org.sai.featureeye.controller.HomeController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

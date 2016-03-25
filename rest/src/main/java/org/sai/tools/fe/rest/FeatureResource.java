@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.sai.featureeye.domain.Feature;
 import org.sai.featureeye.gherkin.Element;
 import org.sai.featureeye.gherkin.FeatureFileFragment;
+import org.sai.tools.fe.validator.FeatureValidator;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -56,6 +57,14 @@ public class FeatureResource {
         return new ResponseEntity<List<Feature>>(features, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/feature-models", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<List<FeatureFileFragment>> featureModel() {
+        LOG.info("Get All featureModel");
+        List<FeatureFileFragment> features = mongoTemplate.findAll(FeatureFileFragment.class);
+
+        return new ResponseEntity<List<FeatureFileFragment>>(features, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/feature/{featureId}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Feature> featureDetail(@PathVariable("featureId") final String featureId) {
         LOG.info("Get All featuresSummary");
@@ -64,17 +73,31 @@ public class FeatureResource {
         return new ResponseEntity<Feature>(mongoTemplate.findOne(q, Feature.class), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/featureModel/{featureId}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<FeatureFileFragment> featureModel(@PathVariable("featureId") final String featureId) {
+        LOG.info("Get featureModel");
+        Query q = new Query();
+        q.addCriteria(Criteria.where("featureId").is(featureId));
+        return new ResponseEntity<FeatureFileFragment>(mongoTemplate.findOne(q, FeatureFileFragment.class), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/validate", method = RequestMethod.POST, produces = "text/plain")
+    public ResponseEntity<String> validate(@RequestBody final String featureContents) {
+        LOG.info("validate");
+        return new ResponseEntity<String>("", HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/features", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<Feature>> featuresSearch(@RequestParam(value = "tags", required = false) final String tags, @RequestParam("featureText") final String featureText) {
         String _tags = tags;
-        if(_tags == null) {
+        if (_tags == null) {
             _tags = "";
         }
-        LOG.info("featuresSearch");
+        LOG.info("featuresSearch: " + featureText);
         Query q = new Query();
-        q.addCriteria(Criteria.where("rawContents").regex(Pattern.compile(featureText.trim(), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)));
-        ;
+        q.addCriteria(Criteria.where("rawContents").regex(Pattern.compile(featureText.trim(), Pattern.CASE_INSENSITIVE)));
         List<Feature> featuresMatchedByText = mongoTemplate.find(q, Feature.class);
+        System.out.println(featuresMatchedByText);
         List<String> tagTokens = Arrays.asList(_tags.split(" ")).stream().map(t -> t.replace("@", "").trim()).collect(Collectors.toList());
         List<Feature> filtered = featuresMatchedByText.stream()
                 .filter(f -> tagTokens.stream().allMatch(tag -> f.getRawContents().contains("@" + tag)))
