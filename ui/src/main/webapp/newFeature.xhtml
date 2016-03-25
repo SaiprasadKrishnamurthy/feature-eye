@@ -22,25 +22,41 @@
         <h2>New Feature Editor</h2>
 
         <h:form id="newFeatureForm">
-            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
             <h:panelGrid columns="3" cellpadding="5" cellspacing="10">
                 <p:outputLabel value="Available features to use as a sample"/>
                 <p:selectOneMenu id="console" value="#{featureController.selectedTemplate}" style="width:250px"
                                  filter="true" filterMatchMode="startsWith">
-                    <f:selectItem itemLabel="Select One" itemValue="" />
+                    <f:selectItem itemLabel="Select One" itemValue=""/>
                     <f:selectItems value="#{featureController.featureSummary}" var="f" itemLabel="#{f.fileName}"
                                    itemValue="#{f.fileName}"/>
                 </p:selectOneMenu>
-                <p:splitButton value="Actions"  icon="ui-icon-flag">
-                    <p:menuitem value="Use this as template" actionListener="#{featureController.applyTemplate}" update=":#{p:component('newFeatureForm')}" icon="ui-icon-arrowrefresh-1-w" />
-                    <p:menuitem value="Validate this feature" actionListener="#{featureController.validate}" update=":#{p:component('newFeatureForm')}" icon="ui-icon-arrowrefresh-1-w" />
-                    <p:menuitem value="Publish this feature" actionListener="#{featureController.publish}" update=":#{p:component('newFeatureForm')}" icon="ui-icon-arrowrefresh-1-w" />
+                <p:splitButton value="Actions" icon="ui-icon-flag">
+                    <p:menuitem value="Use this as template" actionListener="#{featureController.applyTemplate}"
+                                update=":#{p:component('newFeatureForm')}" icon="ui-icon-arrowrefresh-1-w"/>
+                    <p:menuitem value="Validate this feature" actionListener="#{featureController.validate}"
+                                update=":#{p:component('newFeatureForm')}" icon="ui-icon-arrowrefresh-1-w"/>
+                    <p:menuitem value="Publish this feature" onclick="PF('dlg').show();return false;"
+                                update=":#{p:component('newFeatureForm')}" icon="ui-icon-arrowrefresh-1-w">
+                    </p:menuitem>
                 </p:splitButton>
             </h:panelGrid>
+            <p:dialog header="Publish" widgetVar="dlg" resizable="false">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel for="author" value="What is your name that everyone knows?"/>
+                    <p:inputText id="author" value="#{featureController.author}" label="username"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Publish" actionListener="#{featureController.publish}"
+                                         oncomplete="PF('dlg').hide();"/>
+                    </f:facet>
+                </h:panelGrid>
+            </p:dialog>
             <pe:codeMirror id="codeMirror" mode="gherkin"
                            theme="eclipse" value="#{featureController.templateScenarioText}"
                            lineNumbers="true" style="height: auto"/>
         </h:form>
+
 
 
     </ui:define>

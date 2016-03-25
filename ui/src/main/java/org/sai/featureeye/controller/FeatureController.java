@@ -35,6 +35,8 @@ public class FeatureController {
 
     private String templateScenarioText;
 
+    private String author;
+
 
     public FeatureController() {
         RestTemplate rt = new RestTemplate();
@@ -78,6 +80,16 @@ public class FeatureController {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Feature looks good."));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Validation errors: " + errorMsg));
+        }
+    }
+
+    public void publish() {
+        RestTemplate rt = new RestTemplate();
+        String errorMsg = rt.postForObject(String.format(RestEndpointConfig.PUBLISH_FEATURE_ENDPOINT_URI, author), templateScenarioText, String.class);
+        if (errorMsg == null || errorMsg.length() == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Feature published successfully."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Feature not published because of errors. " + errorMsg));
         }
     }
 
@@ -159,5 +171,13 @@ public class FeatureController {
 
     public void setTemplateScenarioText(String templateScenarioText) {
         this.templateScenarioText = templateScenarioText;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

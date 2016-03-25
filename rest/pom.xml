@@ -179,6 +179,12 @@
             <version>2.12.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>in.ashwanthkumar</groupId>
+            <artifactId>slack-java-webhook</artifactId>
+            <version>0.0.5</version>
+        </dependency>
+
 
 
     </dependencies>

@@ -32,4 +32,6 @@ import org.springframework.stereotype.Component;
 public class AppProperties {
     private String mongoHost;
     private String mongoDB;
+    private String featurePublishUri;
+    private String slackChannelToPublishFeature;
 }

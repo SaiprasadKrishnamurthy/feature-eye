@@ -1,13 +1,15 @@
 package org.sai.tools.fe.rest;
 
 import com.google.common.collect.Sets;
+import in.ashwanthkumar.slack.webhook.Slack;
+import in.ashwanthkumar.slack.webhook.SlackMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.sai.featureeye.domain.Feature;
 import org.sai.featureeye.gherkin.Element;
 import org.sai.featureeye.gherkin.FeatureFileFragment;
-import org.sai.tools.fe.validator.FeatureValidator;
+import org.sai.tools.fe.AppProperties;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -35,10 +37,12 @@ public class FeatureResource {
     private static final Logger LOG = Logger.getLogger(FeatureResource.class);
 
     private final MongoTemplate mongoTemplate;
+    private final AppProperties appProperties;
 
     @Inject
-    public FeatureResource(final MongoTemplate mongoTemplate) {
+    public FeatureResource(final MongoTemplate mongoTemplate, final AppProperties appProperties) {
         this.mongoTemplate = mongoTemplate;
+        this.appProperties = appProperties;
     }
 
 
@@ -121,6 +125,17 @@ public class FeatureResource {
         String filteredContent = featureHeader + "\n\n" + filteredScenarios.stream().map(e -> toText(e)).collect(joining("\n"));
 
         return new ResponseEntity<String>(filteredContent, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/publish-feature", method = RequestMethod.POST, produces = "text/plain")
+    public ResponseEntity<String> publishFeature(@RequestBody final String featureContent, @RequestParam(value = "author", required = true) final String author) throws Exception {
+        LOG.info("publishFeature "+author);
+        new Slack(appProperties.getFeaturePublishUri())
+                .displayName("Feature published by "+author)
+                .sendToChannel(appProperties.getSlackChannelToPublishFeature())
+                .push(new SlackMessage(featureContent));
+        System.out.println("Pushed..");
+        return new ResponseEntity<String>("", HttpStatus.OK);
     }
 
     private String toText(final Element e) {
