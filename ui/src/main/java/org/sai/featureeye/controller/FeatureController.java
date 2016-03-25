@@ -22,6 +22,10 @@ public class FeatureController {
 
     private String scenarioTags;
 
+    private String filteredScenarioText;
+
+    private boolean filter;
+
 
     public FeatureController() {
         RestTemplate rt = new RestTemplate();
@@ -34,7 +38,13 @@ public class FeatureController {
     }
 
     public void filterScenarios() {
-        System.out.println(" ----- "+scenarioTags);
+        filter = true;
+        System.out.println(" ----- "+scenarioTags +  " ===> "+String.format(RestEndpointConfig.FILTERED_SCENARIOS_ENDPOINT_URI, currentFeature.getId(), scenarioTags));
+
+        RestTemplate rt = new RestTemplate();
+        filteredScenarioText = rt.getForObject(String.format(RestEndpointConfig.FILTERED_SCENARIOS_ENDPOINT_URI, currentFeature.getId(), scenarioTags), String.class);
+        System.out.println(filteredScenarioText);
+
     }
 
     public List<Feature> getFeatureSummary() {
@@ -59,5 +69,21 @@ public class FeatureController {
 
     public void setScenarioTags(String scenarioTags) {
         this.scenarioTags = scenarioTags;
+    }
+
+    public String getFilteredScenarioText() {
+        return filteredScenarioText;
+    }
+
+    public void setFilteredScenarioText(String filteredScenarioText) {
+        this.filteredScenarioText = filteredScenarioText;
+    }
+
+    public boolean isFilter() {
+        return filter;
+    }
+
+    public void setFilter(boolean filter) {
+        this.filter = filter;
     }
 }

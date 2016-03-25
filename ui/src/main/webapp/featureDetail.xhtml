@@ -4,6 +4,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="layout.xhtml">
 
 
@@ -20,28 +21,43 @@
 
         <h2>Feature Detail</h2>
 
-        <h:form>
+        <h:form id="detailsForm">
             <p:tabView>
-            <p:tab title="Content">
-                <h:panelGrid columns="2" cellpadding="5" cellspacing="10">
-                    <p:inputText value="#{featureController.scenarioTags}" placeholder="Tag names to filter the scenarios separated by whitespace eg: ui config" size="80"/>
-                    <p:commandButton icon="ui-icon-arrowrefresh-1-w" title="apply filter" actionListener="#{featureController.filterScenarios}"/>
-                </h:panelGrid>
+                <p:tab title="Content">
+                    <h:panelGrid columns="3" cellpadding="5" cellspacing="10">
+                        <p:inputText value="#{featureController.scenarioTags}"
+                                     placeholder="Tag names to filter the scenarios separated by whitespace eg: ui config"
+                                     size="80"/>
+                        <p:commandButton icon="ui-icon-search" title="apply filter"
+                                         actionListener="#{featureController.filterScenarios}"
+                                         update=":#{p:component('detailsForm')}"/>
 
-                <pe:codeMirror id="codeMirror" mode="gherkin"
-                               theme="eclipse" value="#{featureController.currentFeature.rawContents}"
-                               lineNumbers="true" style="height: auto"/>
-            </p:tab>
-            <p:tab title="Reports">
-                COMING SOON
-            </p:tab>
+                        <p:button outcome="featureDetail"  icon="ui-icon-arrowrefresh-1-w" title="reload this feature without any features">
+                            <f:param name="featureId" value="#{featureController.currentFeature.id}"/>
+                        </p:button>
+                    </h:panelGrid>
+                    <c:choose>
+                        <c:when test="#{featureController.filter}">
+                            <pe:codeMirror id="codeMirror" mode="gherkin"
+                                           theme="eclipse" value="#{featureController.filteredScenarioText}"
+                                           lineNumbers="true" style="height: auto"/>
+                        </c:when>
+                        <c:otherwise>
+                            <pe:codeMirror id="codeMirror" mode="gherkin"
+                                           theme="eclipse" value="#{featureController.currentFeature.rawContents}"
+                                           lineNumbers="true" style="height: auto"/>
+                        </c:otherwise>
+                    </c:choose>
+                </p:tab>
+                <p:tab title="Reports">
+                    COMING SOON
+                </p:tab>
 
-            <p:tab title="Subscriptions">
-                COMING SOON
+                <p:tab title="Subscriptions">
+                    COMING SOON
 
-            </p:tab>
+                </p:tab>
             </p:tabView>
-
 
 
         </h:form>
