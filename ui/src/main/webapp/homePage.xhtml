@@ -18,8 +18,11 @@
         <p:spacer width="10" height="30"/>
 
         <h:form id="form">
-            <h2>Top features (in terms of the number of scenarios defined)</h2>
-            <p:chart type="bar" model="#{homeController.topSizedFeatures}" style="width:700px;height: 700px;" />
+            <h:panelGrid columns="2" cellpadding="5">
+                <p:chart type="bar" model="#{homeController.topSizedFeatures}" style="width:500px;height: 700px;" />
+                <p:chart type="pie" model="#{homeController.tagsBreakdown}" style="width:500px;height:700px" />
+
+            </h:panelGrid>
 
         </h:form>
     </ui:define>
