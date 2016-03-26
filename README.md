@@ -1,13 +1,31 @@
 # README #
 
-# TODO detailed documentation #
-Feature Repository Search
-
+# What this is about? #
+This is an APP that mines/pulls feature files defined in Gherkin language from one or more GIT repositories of your organisation
+ and presents this from a database that can then be easily searched/reported/collaborated upon.
+ There are quite a few useful functions available to the user to easily create a Feature file which can then be validated based on
+ pluggable rules defined by your company and can then published to various channels.
+ 
+ The default channel that is supported is **Slack**
+ 
+ 
 # Prerequisites #
-TODO add soon.
+## To build and deploy the source ##
+* Java 8
+* Maven 3
+* Tomcat 8+
+* MongoDB 3.2.1+
+
+# Modules #
+| Module        | Description           | Tech Notes  |
+| ------------- |:-------------:| -----:|
+| api      | general api shared by all the modules (just the model and domain definitions) | Java/Maven module exported as a jar artifact|
+| loaders      | mines and loads the feature files from GIT into the MongoDB | Scala/Maven module eported as a jar artifact. Uses Akka Actors for better scalability|
+| rest      | contains the business logic of exposing the underlying mongodb as useful business functions via RestAPI | Java/Maven module exported as a jar artifact. Uses Spring Boot Microservices framework|
+| ui      | contains the user interfaces no business logic. It talks to the rest api to access a business functionality. | Java/Maven module exported as a war artifact. Uses JSF framework|
 
 # High Level Architecture #
-Modular and scalable design.
+Architecture
 
 ![Architecture](architecture.gif?raw=true "High level architecture")
 
