@@ -8,7 +8,7 @@ import org.joda.time.DateTime
 
 import scala.concurrent.duration._
 
-object BaseTriggerActor {
+object BaseLoader {
 
   def main(args: Array[String]): Unit = {
     println(" ------------------- STARTING FE ACTOR SYSTEM ------------------- ")
