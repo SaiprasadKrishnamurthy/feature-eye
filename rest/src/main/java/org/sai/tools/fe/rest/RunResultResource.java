@@ -51,10 +51,9 @@ public class RunResultResource {
     ) throws Exception {
         LOG.info("save run result " + cucumberJsons);
         RunResult runResult = new RunResult();
-        runResult.setBuildId(buildId.trim());
         runResult.setVersion(version.trim());
         runResult.setBuildLabel(buildLabel.trim());
-        runResult.setBuildId(buildId.trim());
+        runResult.setBuildId(buildId.trim().replace(":", "_"));
         runResult.setBuildServer(buildServer.trim());
         runResult.setBuildParameters(buildParameters.trim());
         runResult.setCucumberJsons(cucumberJsons.stream().map(l -> new BasicDBObject(l.get(0))).collect(Collectors.toList()));
