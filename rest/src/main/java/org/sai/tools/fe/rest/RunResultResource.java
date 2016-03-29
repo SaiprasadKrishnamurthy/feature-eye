@@ -60,7 +60,7 @@ public class RunResultResource {
         runResult.setCucumberJsons(cucumberJsons.stream().map(l -> new BasicDBObject(l.get(0))).collect(Collectors.toList()));
         mongoTemplate.save(runResult);
 
-        File dir = new File(appProperties.getReportsDir() + File.separator + runResult.getBuildId());
+        File dir = new File(appProperties.getReportsDir() + File.separator + runResult.getBuildId().replace(":", "_"));
         FileUtils.deleteQuietly(dir);
         List<File> jsons = new ArrayList<>();
 
