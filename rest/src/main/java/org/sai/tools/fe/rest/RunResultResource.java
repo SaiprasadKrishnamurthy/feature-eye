@@ -53,13 +53,13 @@ public class RunResultResource {
         RunResult runResult = new RunResult();
         runResult.setVersion(version.trim());
         runResult.setBuildLabel(buildLabel.trim());
-        runResult.setBuildId(buildId.trim().replace(":", "_"));
+        runResult.setBuildId(buildId.trim().replace(":", "_").replace(" ",""));
         runResult.setBuildServer(buildServer.trim());
         runResult.setBuildParameters(buildParameters.trim());
         runResult.setCucumberJsons(cucumberJsons.stream().map(l -> new BasicDBObject(l.get(0))).collect(Collectors.toList()));
         mongoTemplate.save(runResult);
 
-        File dir = new File(appProperties.getReportsDir() + File.separator + runResult.getBuildId().replace(":", "_"));
+        File dir = new File(appProperties.getReportsDir() + File.separator + runResult.getBuildId().replace(":", "_").replace(" ",""));
         FileUtils.deleteQuietly(dir);
         List<File> jsons = new ArrayList<>();
 
