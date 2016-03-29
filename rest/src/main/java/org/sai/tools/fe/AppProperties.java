@@ -34,4 +34,5 @@ public class AppProperties {
     private String mongoDB;
     private String featurePublishUri;
     private String slackChannelToPublishFeature;
+    private String reportsDir;
 }

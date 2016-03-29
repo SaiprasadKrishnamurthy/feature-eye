@@ -32,7 +32,8 @@
                                          actionListener="#{featureController.filterScenarios}"
                                          update=":#{p:component('detailsForm')}"/>
 
-                        <p:button outcome="featureDetail"  icon="ui-icon-arrowrefresh-1-w" title="reload this feature without any features">
+                        <p:button outcome="featureDetail" icon="ui-icon-arrowrefresh-1-w"
+                                  title="reload this feature without any features">
                             <f:param name="featureId" value="#{featureController.currentFeature.id}"/>
                         </p:button>
                     </h:panelGrid>
@@ -50,7 +51,42 @@
                     </c:choose>
                 </p:tab>
                 <p:tab title="Reports">
-                    COMING SOON
+                    <h:form>
+                        <p:dataTable var="r" value="#{featureController.filteredRunResults}" rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,30,50">
+                            <p:column headerText="Build Id">
+                                <p:lightBox iframe="true" id="lighbox3" width="1000px" height="670px">
+                                    <h:outputLink
+                                            value="http://localhost:9999/feature-ui/#{r.buildId}/feature-overview.html"
+                                            title="Reports for build id: #{r.buildId}">
+                                        <h:outputText value="#{r.buildId}"/>
+                                    </h:outputLink>
+                                </p:lightBox>
+                            </p:column>
+
+                            <p:column headerText="Product Version">
+                                <p:lightBox iframe="true" id="lighbox4" width="1000px" height="670px">
+                                    <h:outputLink
+                                            value="http://localhost:9999/feature-ui/#{r.buildId}/feature-overview.html"
+                                            title="Reports for build id: #{r.buildId}">
+                                        <h:outputText value="#{r.version}"/>
+                                    </h:outputLink>
+                                </p:lightBox>
+                            </p:column>
+
+                            <p:column headerText="Build Label">
+                                <p:lightBox iframe="true" id="lighbox5" width="1000px" height="670px">
+                                    <h:outputLink
+                                            value="http://localhost:9999/feature-ui/#{r.buildId}/feature-overview.html"
+                                            title="Reports for build id: #{r.buildId}">
+                                        <h:outputText value="#{r.buildLabel}"/>
+                                    </h:outputLink>
+                                </p:lightBox>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
                 </p:tab>
 
                 <p:tab title="Subscriptions">

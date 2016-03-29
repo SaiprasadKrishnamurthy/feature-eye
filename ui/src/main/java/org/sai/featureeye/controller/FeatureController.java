@@ -2,6 +2,7 @@ package org.sai.featureeye.controller;
 
 import org.sai.featureeye.RestEndpointConfig;
 import org.sai.featureeye.domain.Feature;
+import org.sai.featureeye.domain.RunResult;
 import org.springframework.web.client.RestTemplate;
 
 import javax.faces.application.FacesMessage;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by saipkri on 25/03/16.
@@ -37,6 +39,11 @@ public class FeatureController {
 
     private String author;
 
+    private List<RunResult> runResults = new ArrayList<>();
+    private List<RunResult> filteredRunResults = new ArrayList<>();
+
+    private static final String reportsDir = System.getProperty("reports.dir");
+
 
     public FeatureController() {
         RestTemplate rt = new RestTemplate();
@@ -44,7 +51,10 @@ public class FeatureController {
         featureSummary = Arrays.asList(features);
         HttpServletRequest rq = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         if (rq.getParameter("featureId") != null) {
+            runResults = Arrays.asList(rt.getForObject(RestEndpointConfig.ALL_RUN_RESULTS_ENDPOINT_URI, RunResult[].class));
             currentFeature = rt.getForObject(String.format(RestEndpointConfig.FEATURE_DETAIL_ENDPOINT_URI, rq.getParameter("featureId")), Feature.class);
+            filteredRunResults.clear();
+            filteredRunResults = runResults.stream().filter(rr -> rr.getCucumberJsons().stream().filter(doc -> doc.get("uri").toString().contains(currentFeature.getFileName())).count() > 0).collect(Collectors.toList());
         }
     }
 
@@ -179,5 +189,21 @@ public class FeatureController {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public List<RunResult> getRunResults() {
+        return runResults;
+    }
+
+    public void setRunResults(List<RunResult> runResults) {
+        this.runResults = runResults;
+    }
+
+    public List<RunResult> getFilteredRunResults() {
+        return filteredRunResults;
+    }
+
+    public void setFilteredRunResults(List<RunResult> filteredRunResults) {
+        this.filteredRunResults = filteredRunResults;
     }
 }
