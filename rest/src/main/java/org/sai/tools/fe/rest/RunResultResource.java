@@ -53,13 +53,13 @@ public class RunResultResource {
         RunResult runResult = new RunResult();
         runResult.setVersion(version.trim());
         runResult.setBuildLabel(buildLabel.trim());
-        runResult.setBuildId(buildId.trim().replace(":", "_").replace(" ",""));
+        runResult.setBuildId(buildId.trim().replace(":", "_").replace(" ", ""));
         runResult.setBuildServer(buildServer.trim());
         runResult.setBuildParameters(buildParameters.trim());
         runResult.setCucumberJsons(cucumberJsons.stream().map(l -> new BasicDBObject(l.get(0))).collect(Collectors.toList()));
         mongoTemplate.save(runResult);
 
-        File dir = new File(appProperties.getReportsDir() + File.separator + runResult.getBuildId().replace(":", "_").replace(" ",""));
+        File dir = new File(appProperties.getReportsDir() + File.separator + runResult.getBuildId().replace(":", "_").replace(" ", ""));
         FileUtils.deleteQuietly(dir);
         List<File> jsons = new ArrayList<>();
 
@@ -83,6 +83,6 @@ public class RunResultResource {
 
     @RequestMapping(value = "/run-results", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<RunResult>> allRunResults() {
-        return new ResponseEntity<>(mongoTemplate.findAll(RunResult.class), HttpStatus.OK);
+        return new ResponseEntity<>(mongoTemplate.findAll(RunResult.class).sort((r1, r2) -> r2.getBuildId().compareTo(r1.getBuildId())), HttpStatus.OK);
     }
 }
