@@ -83,6 +83,8 @@ public class RunResultResource {
 
     @RequestMapping(value = "/run-results", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<RunResult>> allRunResults() {
-        return new ResponseEntity<>(mongoTemplate.findAll(RunResult.class).sort((r1, r2) -> r2.getBuildId().compareTo(r1.getBuildId())), HttpStatus.OK);
+        List<RunResult> runResults = mongoTemplate.findAll(RunResult.class);
+        runResults.sort((r1, r2) -> r2.getBuildId().compareTo(r1.getBuildId()));
+        return new ResponseEntity<>(runResults, HttpStatus.OK);
     }
 }
