@@ -40,12 +40,12 @@
                     <c:choose>
                         <c:when test="#{featureController.filter}">
                             <pe:codeMirror id="codeMirror" mode="gherkin"
-                                           theme="eclipse" value="#{featureController.filteredScenarioText}"
+                                           theme="rubyblue" value="#{featureController.filteredScenarioText}"
                                            lineNumbers="true" style="height: auto"/>
                         </c:when>
                         <c:otherwise>
                             <pe:codeMirror id="codeMirror" mode="gherkin"
-                                           theme="eclipse" value="#{featureController.currentFeature.rawContents}"
+                                           theme="rubyblue" value="#{featureController.currentFeature.rawContents}"
                                            lineNumbers="true" style="height: auto"/>
                         </c:otherwise>
                     </c:choose>
